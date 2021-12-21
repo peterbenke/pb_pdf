@@ -41,6 +41,11 @@ class PdfService
 	/**
 	 * @var string
 	 */
+	protected $extensionKey;
+
+	/**
+	 * @var string
+	 */
 	protected $templatePath;
 
 	/**
@@ -80,6 +85,22 @@ class PdfService
 		$options = new Options();
 		$options->setChroot(Environment::getPublicPath());
 		$this->domPdf = new Dompdf($options);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getExtensionKey(): string
+	{
+		return $this->extensionKey;
+	}
+
+	/**
+	 * @param string $extensionKey
+	 */
+	public function setExtensionKey(string $extensionKey): void
+	{
+		$this->extensionKey = $extensionKey;
 	}
 
 	/**
@@ -168,14 +189,16 @@ class PdfService
 	 * # htmlModeOn:
 	 *   if set to true, the html will be outputted and the script stops immediately after this
 	 *
+	 * @param string $extensionKey
 	 * @param string $templatePath
 	 * @param string $pdfPath
 	 * @param array $assign
 	 * @param bool $htmlModeOn
 	 * @author Peter Benke <info@typomotor.de>
 	 */
-	public function __construct(string $templatePath, string $pdfPath, array $assign = [], bool $htmlModeOn = false)
+	public function __construct(string $extensionKey, string $templatePath, string $pdfPath, array $assign = [], bool $htmlModeOn = false)
 	{
+		$this->setExtensionKey($extensionKey);
 		$this->setTemplatePath($templatePath);
 		$this->setPdfPath($pdfPath);
 		$this->setAssign($assign);
@@ -194,7 +217,7 @@ class PdfService
 		$domPdf = $this->getDomPdf();
 
 		$domPdf->setPaper('A4');
-		$html = FluidUtility::renderFluidTemplate($this->getTemplatePath(), $this->getAssign());
+		$html = FluidUtility::renderFluidTemplate($this->getExtensionKey(), $this->getTemplatePath(), $this->getAssign());
 
 		if($this->isHtmlModeOn()){
 			echo $html;
