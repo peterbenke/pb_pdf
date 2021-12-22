@@ -54,6 +54,11 @@ class PdfService
 	protected $pdfPath;
 
 	/**
+	 * @var string|null
+	 */
+	protected $tmpDir;
+
+	/**
 	 * @var array
 	 */
 	protected $assign;
@@ -84,6 +89,9 @@ class PdfService
 	{
 		$options = new Options();
 		$options->setChroot(Environment::getPublicPath());
+		if(!empty($this->getTmpDir())){
+			$options->setTempDir($this->getTmpDir());
+		}
 		$this->domPdf = new Dompdf($options);
 	}
 
@@ -133,6 +141,22 @@ class PdfService
 	protected function setPdfPath(string $pdfPath): void
 	{
 		$this->pdfPath = $pdfPath;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getTmpDir(): ?string
+	{
+		return $this->tmpDir;
+	}
+
+	/**
+	 * @param string|null $tmpDir
+	 */
+	public function setTmpDir(?string $tmpDir): void
+	{
+		$this->tmpDir = $tmpDir;
 	}
 
 	/**
@@ -192,15 +216,17 @@ class PdfService
 	 * @param string $extensionKey
 	 * @param string $templatePath
 	 * @param string $pdfPath
+	 * @param string|null $tmpDir
 	 * @param array $assign
 	 * @param bool $htmlModeOn
 	 * @author Peter Benke <info@typomotor.de>
 	 */
-	public function __construct(string $extensionKey, string $templatePath, string $pdfPath, array $assign = [], bool $htmlModeOn = false)
+	public function __construct(string $extensionKey, string $templatePath, string $pdfPath, ?string $tmpDir = '/tmp', array $assign = [], bool $htmlModeOn = false)
 	{
 		$this->setExtensionKey($extensionKey);
 		$this->setTemplatePath($templatePath);
 		$this->setPdfPath($pdfPath);
+		$this->setTmpDir($tmpDir);
 		$this->setAssign($assign);
 		$this->setHtmlModeOn($htmlModeOn);
 		$this->setDomPdf();

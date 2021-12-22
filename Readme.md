@@ -52,8 +52,9 @@ class YourClass
         PdfService::class,
         'your_extension_key', // extension key
         '/Resources/Private/Templates/Pdf/your-template.html', // template path
-        $absoluteJobPdfPath, // absolute! pdf path to pdf file
-        $assign // optional assign array (fluid)
+        $absoluteJobPdfPath,  // absolute! pdf path to pdf file
+        null,                 // tmp directory, if empty => '/tmp' will be set
+        $assign               // optional assign array (fluid)
     );
     
     // Create pdf file
