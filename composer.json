@@ -16,7 +16,7 @@
     ],
     "require": {
         "typo3/cms-core": "^11.5",
-        "dompdf/dompdf": "1.1.1"
+        "dompdf/dompdf": "2.0.1"
     },
     "autoload": {
         "psr-4": {
