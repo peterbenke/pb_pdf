@@ -19,8 +19,13 @@
     "GPL-2.0+"
   ],
   "require": {
-    "typo3/cms-core": "^10.4",
-    "dompdf/dompdf": "1.1.1"
+    "typo3/cms-core": "^10.4 || ^11.5",
+    "dompdf/dompdf": "^2.0"
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "pb_pdf"
+    }
   },
   "autoload": {
     "psr-4": {

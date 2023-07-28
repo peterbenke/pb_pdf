@@ -32,13 +32,12 @@ class FluidUtility
 
 		$extensionName = GeneralUtility::underscoredToUpperCamelCase($extensionKey);
 		$absFileName = GeneralUtility::getFileAbsFileName('EXT:' . $extensionKey . $templatePath);
-
 		$view = GeneralUtility::makeInstance(StandaloneView::class);
 		$view->setTemplatePathAndFilename($absFileName);
+		$view->setTemplateRootPaths([0 => $absFileName] );
 		$view->assignMultiple($assign);
 		// To get the correct locallang files
 		$view->getRequest()->setControllerExtensionName($extensionName);
-
 		return $view->render();
 	}
 
