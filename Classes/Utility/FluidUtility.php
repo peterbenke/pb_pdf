@@ -30,11 +30,19 @@ class FluidUtility
 	public static function renderFluidTemplate(string $extensionKey, string $templatePath, array $assign = []): string
 	{
 
-		$extensionName = GeneralUtility::underscoredToUpperCamelCase($extensionKey);
-		$absFileName = GeneralUtility::getFileAbsFileName('EXT:' . $extensionKey . $templatePath);
+        $extensionName = GeneralUtility::underscoredToUpperCamelCase($extensionKey);
+        $templatePath = "/" . ltrim(  $templatePath , "/")  ;
+
+        $absFileName = GeneralUtility::getFileAbsFileName('EXT:' . $extensionKey . $templatePath);
+
+        $template = basename($absFileName , ".html" ) ;
+        $templateFolder = dirname($templatePath  ) ;
+
 		$view = GeneralUtility::makeInstance(StandaloneView::class);
-		$view->setTemplatePathAndFilename($absFileName);
-		$view->setTemplateRootPaths([0 => $absFileName] );
+		$view->setTemplate($template);
+        $view->setTemplateRootPaths([0 => 'EXT:' . $extensionKey . $templateFolder ] );
+
+        $view->setTemplatePathAndFilename($absFileName);
 		$view->assignMultiple($assign);
 		// To get the correct locallang files
 		$view->getRequest()->setControllerExtensionName($extensionName);
